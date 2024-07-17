@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    ruby_portabletext (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.24.1)
+
+PLATFORMS
+  arm64-darwin-23
+  ruby
+
+DEPENDENCIES
+  minitest (~> 5.0)
+  ruby_portabletext!
+
+BUNDLED WITH
+   2.5.10
