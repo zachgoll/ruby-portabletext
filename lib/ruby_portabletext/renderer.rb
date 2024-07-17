@@ -1,7 +1,10 @@
 module RubyPortabletext
   class Renderer
-    def render(portable_text)
-      "rendered portable text"
+    def initialize()
+    end
+
+    def render(blocks)
+      "<p></p>"
     end
   end
 end

@@ -1,5 +1,6 @@
 require "minitest/autorun"
 require "minitest/spec"
+require "json"
 require "ruby_portabletext"
 
 module Minitest
