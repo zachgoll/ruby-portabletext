@@ -3,8 +3,8 @@ require_relative "child"
 class Children
   attr_reader :children
 
-  def initialize(children_json, mark_defs_json)
-    @children = create_child_blocks(children_json, mark_defs_json)
+  def initialize(children_json, mark_defs_json, project_id, dataset)
+    @children = create_child_blocks(children_json, mark_defs_json, project_id, dataset)
   end
 
   def to_html
@@ -13,12 +13,12 @@ class Children
 
   private
 
-    def create_child_blocks(children_json, mark_defs_json)
+    def create_child_blocks(children_json, mark_defs_json, project_id, dataset)
       mark_defs = mark_defs_json.map { |md| MarkDef.new(md) }
 
       children = children_json.map do |child_json|
-        marks = create_marks(child_json["marks"], mark_defs)
-        Child.new(child_json["_type"], child_json["text"], marks)
+        marks = create_marks(child_json["marks"] || [], mark_defs)
+        Child.new(child_json, marks, project_id, dataset)
       end
 
       children.each_with_index.map do |child, idx|

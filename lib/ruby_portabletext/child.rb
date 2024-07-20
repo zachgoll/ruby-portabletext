@@ -3,13 +3,16 @@ require_relative "annotation/highlight"
 require_relative "decorator"
 
 class Child
-  attr_reader :type, :text, :marks
+  attr_reader :type, :text, :marks, :project_id, :dataset, :data
   attr_accessor :prev_child, :next_child
 
-  def initialize(type, text, marks, next_child: nil, prev_child: nil)
-    @type = type
-    @text = text
+  def initialize(json, marks, project_id, dataset, next_child: nil, prev_child: nil)
+    @data = json
+    @type = json["_type"]
+    @text = json["text"]
     @marks = marks
+    @project_id = project_id
+    @dataset = dataset
     @next_child = next_child
     @prev_child = prev_child
   end
@@ -23,7 +26,18 @@ class Child
   end
 
   def to_html
-    open_marks + escape_html_string(text) + close_marks
+    output_html = ""
+    output_html += open_marks
+
+    case type
+    when "image"
+      output_html += Image.new(data, project_id, dataset, render_figure: false).to_html
+    else
+      output_html += escape_html_string(text)
+    end
+
+    output_html += close_marks
+    output_html
   end
 
   private

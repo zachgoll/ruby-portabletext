@@ -2,13 +2,15 @@ require_relative "children"
 require_relative "mark_def"
 
 class Block
-  attr_reader :key, :type, :children, :style, :mark_defs, :list_item, :level
+  attr_reader :key, :type, :children, :style, :mark_defs, :list_item, :level, :project_id, :dataset
 
-  def initialize(json)
+  def initialize(json, project_id, dataset)
+    @project_id = project_id
+    @dataset = dataset
     @key = json["_key"]
     @type = json["_type"]
     @style = json["style"]
-    @children = Children.new(json["children"], json["markDefs"])
+    @children = Children.new(json["children"], json["markDefs"], project_id, dataset)
     @list_item = json["listItem"]
     @level = json["level"] || 1
   end

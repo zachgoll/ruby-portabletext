@@ -43,7 +43,7 @@ module RubyPortabletext
           when "image"
             Image.new(item_json, project_id, dataset)
           when "block"
-            Block.new(item_json)
+            Block.new(item_json, project_id, dataset)
           else
             raise "Unknown portable text type: #{item_json["_type"]}"
           end

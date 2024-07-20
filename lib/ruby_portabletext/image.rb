@@ -1,21 +1,22 @@
 class Image
   CDN_BASE_URL = "https://cdn.sanity.io/images"
 
-  attr_reader :key, :project_id, :dataset, :ref, :url
+  attr_reader :key, :project_id, :dataset, :ref, :url, :render_figure
 
-  def initialize(json, project_id, dataset)
+  def initialize(json, project_id, dataset, render_figure: true)
     @key = json['_key']
     @ref = json['asset']["_ref"]
     @url = json['asset']["url"]
     @project_id = project_id
     @dataset = dataset
+    @render_figure = render_figure
   end
 
   def to_html
     output_html = ""
-    output_html += "<figure>"
+    output_html += "<figure>" if render_figure
     output_html += "<img src=\"#{image_url}\"/>"
-    output_html += "</figure>"
+    output_html += "</figure>" if render_figure
     output_html
   end
 
