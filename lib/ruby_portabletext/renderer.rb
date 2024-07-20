@@ -16,7 +16,7 @@ module RubyPortabletext
 
       is_array = portabletext_json.is_a?(Array)
 
-      if is_array && portabletext_json.length > 0
+      if is_array && portabletext_json.length > 1
         output += "<div>"
       end
 
@@ -28,7 +28,7 @@ module RubyPortabletext
         output += item.to_html
       end
 
-      if is_array && portabletext_json.length > 0
+      if is_array && portabletext_json.length > 1
         output += "</div>"
       end
 

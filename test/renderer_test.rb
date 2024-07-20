@@ -114,11 +114,11 @@ class RendererTest < Minitest::Test
     json_data = read_json_file("022-inline-nodes.json")
     assert_rendered_result(json_data)
   end
-  #
-  # test "023-hard-breaks" do
-  #   json_data = read_json_file("023-hard-breaks.json")
-  #   assert_rendered_result(json_data)
-  # end
+
+  test "023-hard-breaks" do
+    json_data = read_json_file("023-hard-breaks.json")
+    assert_rendered_result(json_data)
+  end
   #
   # test "024-inline-images" do
   #   json_data = read_json_file("024-inline-images.json")
