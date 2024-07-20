@@ -30,10 +30,12 @@ class Child
     output_html += open_marks
 
     case type
+    when "span"
+      output_html += escape_html_string(text)
     when "image"
       output_html += Image.new(data, project_id, dataset, render_figure: false).to_html
     else
-      output_html += escape_html_string(text)
+      output_html += custom_type(type, escape_html_string(text))
     end
 
     output_html += close_marks
@@ -41,6 +43,10 @@ class Child
   end
 
   private
+
+    def custom_type(type, content)
+      "<#{type}>#{content}</#{type}>"
+    end
 
     def escape_html_string(html_string)
       map = {

@@ -10,7 +10,7 @@ class Block
     @key = json["_key"]
     @type = json["_type"]
     @style = json["style"]
-    @children = Children.new(json["children"], json["markDefs"], project_id, dataset)
+    @children = Children.new(json["children"], json["markDefs"] || [], project_id, dataset)
     @list_item = json["listItem"]
     @level = json["level"] || 1
   end
