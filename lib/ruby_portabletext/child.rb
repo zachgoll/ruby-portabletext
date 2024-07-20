@@ -23,10 +23,24 @@ class Child
   end
 
   def to_html
-    open_marks + text + close_marks
+    open_marks + escape_html_string(text) + close_marks
   end
 
   private
+
+    def escape_html_string(html_string)
+      map = {
+        "'" => "&#x27;",
+        "\n" => "<br/>",
+        "\"" => "&quot;"
+      }
+
+      pattern = Regexp.union(map.keys)
+
+      html_string.gsub(pattern) do |match|
+        map[match]
+      end
+    end
 
     def open_marks
       sorted_marks.reduce("") do |html, mark|

@@ -85,10 +85,10 @@ class RendererTest < Minitest::Test
     assert_rendered_result(json_data)
   end
 
-  # test "017-all-default-block-styles" do
-  #   json_data = read_json_file("017-all-default-block-styles.json")
-  #   assert_rendered_result(json_data)
-  # end
+  test "017-all-default-block-styles" do
+    json_data = read_json_file("017-all-default-block-styles.json")
+    assert_rendered_result(json_data)
+  end
   #
   # test "018-marks-all-the-way-down" do
   #   json_data = read_json_file("018-marks-all-the-way-down.json")

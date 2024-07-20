@@ -16,10 +16,12 @@ class Block
   def to_html
     output = ""
 
+    tag = style.nil? ? "p" : get_tag
+
     if list_item
       output += children.to_html
     else
-      output += render_tag(get_tag, children.to_html)
+      output += render_tag(tag, children.to_html)
     end
 
     output
@@ -30,9 +32,6 @@ class Block
   end
 
   def get_tag
-    # return "li" if list_item
-    # return "p" if style.nil?
-
     map = {
       "normal" => "p",
       "h1" => "h1",

@@ -32,7 +32,7 @@ module RubyPortabletext
         output += "</div>"
       end
 
-      escape_html_string(output)
+      output
     end
 
     private
@@ -68,20 +68,6 @@ module RubyPortabletext
         end
 
         all_items
-      end
-
-      def escape_html_string(html_string)
-        map = {
-          "'" => "&#x27;",
-          "\n" => "<br/>",
-        }
-          # "\"" => "&quot;"
-
-        pattern = Regexp.union(map.keys)
-
-        html_string.gsub(pattern) do |match|
-          map[match]
-        end
       end
   end
 end
