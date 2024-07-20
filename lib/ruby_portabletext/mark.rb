@@ -35,6 +35,7 @@ class Mark
         results.each do |result|
           return result unless result.zero?
         end
+        nil
       end
   end
 
