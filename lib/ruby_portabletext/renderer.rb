@@ -58,7 +58,7 @@ module RubyPortabletext
           if item.is_a?(Block) && item.list_item
             current_list << item
 
-            if next_item.nil? || next_item&.list_item.nil?
+            if next_item.nil? || (next_item.is_a?(Block) && next_item&.list_item.nil?)
               all_items << ListItems.new(current_list)
               current_list = []
             end
