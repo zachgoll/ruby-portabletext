@@ -38,17 +38,17 @@ class Children
       mark_keys.each do |mark_key|
         mark_def = mark_defs.find { |md| md.key == mark_key }
 
-        if mark_def
-          case mark_def.type
+        if Decorator.is_decorator_key?(mark_key)
+          combined_marks << Decorator.new(mark_key)
+        else
+          case mark_def&.type
           when "highlight"
             combined_marks << Annotation::Highlight.new(mark_key, mark_def.attributes)
           when "link"
             combined_marks << Annotation::Link.new(mark_key, mark_def.attributes)
           else
-            raise "Unrecognized mark_def type: #{mark_def.type}"
+            combined_marks << Annotation::Unknown.new(mark_key, {})
           end
-        else
-          combined_marks << Decorator.new(mark_key)
         end
       end
 

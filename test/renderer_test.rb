@@ -140,37 +140,40 @@ class RendererTest < Minitest::Test
     json_data = read_json_file("027-styled-list-items.json")
     assert_rendered_result(json_data)
   end
-  #
-  # test "050-custom-block-type" do
-  #   json_data = read_json_file("050-custom-block-type.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "051-override-defaults" do
-  #   json_data = read_json_file("051-override-defaults.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "052-custom-marks" do
-  #   json_data = read_json_file("052-custom-marks.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "053-override-default-marks" do
-  #   json_data = read_json_file("053-override-default-marks.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
+
+  test "050-custom-block-type" do
+    skip
+    json_data = read_json_file("050-custom-block-type.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "051-override-defaults" do
+    skip
+    json_data = read_json_file("051-override-defaults.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "052-custom-marks" do
+    json_data = read_json_file("052-custom-marks.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "053-override-default-marks" do
+    skip
+    json_data = read_json_file("053-override-default-marks.json")
+    assert_rendered_result(json_data)
+  end
+
   test "060-list-issue" do
     skip # Not sure what this test is... No expectation.
     json_data = read_json_file("060-list-issue.json")
     assert_rendered_result(json_data)
   end
-  #
-  # test "061-missing-mark-serializer" do
-  #   json_data = read_json_file("061-missing-mark-serializer.json")
-  #   assert_rendered_result(json_data)
-  # end
+
+  test "061-missing-mark-serializer" do
+    json_data = read_json_file("061-missing-mark-serializer.json")
+    assert_rendered_result(json_data)
+  end
 
   private
 

@@ -12,6 +12,10 @@ class Decorator < Mark
 
       a_index <=> b_index
     end
+
+    def is_decorator_key?(key)
+      SORTED_KEYS.include?(key)
+    end
   end
 
   def open
