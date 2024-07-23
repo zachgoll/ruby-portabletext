@@ -1,4 +1,5 @@
 require_relative "mark"
+require_relative "mark_def"
 require_relative "span"
 require_relative "children"
 require_relative "renderable"
@@ -7,15 +8,24 @@ module PortableText
   class Block
     include Renderable
 
-    def initialize(key:, type:, style:, serializer:, children:, raw_json:, list_level: nil, list_type: nil)
-      @key = key
-      @type = type
-      @style = style
+    def initialize(serializer:, attributes: {}, raw_json: {})
       @serializer = serializer
-      @children = children
       @raw_json = raw_json
-      @list_level = list_level
-      @list_type = list_type
+      @key = attributes[:key]
+      @type = attributes[:type]
+      @style = attributes[:style]
+      @mark_defs = attributes[:mark_defs]
+      @children = attributes[:children]
+      @list_level = attributes[:list_level]
+      @list_type = attributes[:list_type]
+    end
+
+    def to_html
+      @serializer.call("", @raw_json)
+    end
+
+    def marks
+      []
     end
   end
 end

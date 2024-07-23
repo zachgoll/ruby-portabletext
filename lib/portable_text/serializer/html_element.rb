@@ -7,8 +7,8 @@ module PortableText
         @tag = tag
       end
 
-      def call(data)
-        ""
+      def call(inner_html)
+        "<#{@tag}>#{inner_html}</#{@tag}>"
       end
     end
   end

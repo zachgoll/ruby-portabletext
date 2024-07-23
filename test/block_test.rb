@@ -5,11 +5,13 @@ class PortableText::BlockTest < Minitest::Test
 
   def setup
     @object = PortableText::Block.new \
-      key: "test",
-      type: "test",
-      style: "test",
+      attributes: {
+        key: "test",
+        type: "test",
+        style: "test",
+        children: []
+      },
       serializer: PortableText::Serializer::HTMLElement.new("p"),
-      children: [],
       raw_json: {}
   end
 end

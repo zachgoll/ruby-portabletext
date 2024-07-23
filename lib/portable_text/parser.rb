@@ -1,5 +1,6 @@
 module PortableText
-  class UnknownTypeError < StandardError; end
+  class UnknownTypeError < StandardError
+  end
 
   class Parser
     def initialize(json, serializer_registry)
@@ -54,19 +55,24 @@ module PortableText
         style = element["style"]
         list_level = element["level"]
         list_type = element["listItem"]
-        children = create_children(element["children"], element["markDefs"])
+
+        mark_defs = (element["markDefs"] || []).map { |md| PortableText::MarkDef.new md["_type"], raw_json: md }
+        children = create_children(element["children"], mark_defs)
+
         serializer = serializer_registry.get(type, style)
 
         raise UnknownTypeError.new("#{type} is not defined in serializers registry") unless serializer
 
         PortableText::Block.new \
-          key: key,
-          type: type,
-          style: style,
           serializer: serializer,
-          list_level: list_level,
-          list_type: list_type,
-          children: children,
+          attributes: {
+            key: key,
+            type: type,
+            style: style,
+            list_level: list_level,
+            list_type: list_type,
+            children: children,
+          },
           raw_json: element
       end
 
@@ -84,31 +90,33 @@ module PortableText
           end
         end
 
-        PortableText::Children.new \
-          elements: parsed_elements,
-          raw_json: elements
+        PortableText::Children.new parsed_elements, raw_json: elements
       end
 
       def create_span(element, mark_definitions)
-        type = element["_type"]
         text = element["text"]
-
         mark_keys = element["marks"]
-
         marks = mark_keys.map { |mk| create_mark(mk, mark_definitions) }
 
         PortableText::Span.new \
-          type: type,
-          text: text,
-          marks: marks,
+          attributes: {
+            text: text,
+            marks: marks,
+          },
           raw_json: element
       end
 
       def create_mark(key, mark_definitions)
         definition = mark_definitions.find { |md| md["_key"] == key }
 
+        serializer_key = definition ? definition.type : key
+        serializer = serializer_registry.get(serializer_key)
+
+        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
+
         PortableText::Mark.new \
           key: key,
+          serializer: serializer,
           definition: definition
       end
   end

@@ -1,7 +1,7 @@
 module PortableText
   module Serializer
     class Base
-      def call(data)
+      def call(inner_html, data = nil)
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
     end

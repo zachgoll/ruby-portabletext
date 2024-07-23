@@ -3,58 +3,51 @@ module PortableText
     KNOWN_TYPES = %w[ strong em code underline strike-through ]
 
     class << self
-      def sorted(marks, mark_frequencies)
-        marks.sort do |a, b|
+      def chunk_by_marks(nodes)
+        # nodes.chunk_while { |e1, e2| e1.marks.any? && e2.marks.any? }
+        nodes.chunk_while do |e1, e2|
+          e1_mark_keys = e1.marks.map(&:key)
+          e2_mark_keys = e2.marks.map(&:key)
 
-          # The first non-zero comparison will be the sort
-          sorting_queue = [
-            sort_by_frequency(a, b, mark_frequencies),
-            sort_by_type(a, b),
-            sort_by_decorator(a, b)
-          ]
-
-          handle_sort_results(sorting_queue) || a.key <=> b.key
+          (e1_mark_keys & e2_mark_keys).any?
         end
       end
 
-      private
+      # Finds the outermost mark in a "chunk" of spans
+      # Ties are broken based on whether the mark key is known (decorator) or unknown (annotation)
+      def outermost_mark(nodes)
+        all_marks = nodes.flat_map(&:marks)
+        mark_counts = all_marks.group_by(&:key).transform_values(&:count)
+        return nil if mark_counts.empty?
 
-        def sort_by_type(mark_a, mark_b)
-          mark_a.sort_score <=> mark_b.sort_score
-        end
+        max_count = mark_counts.values.max
 
-        def sort_by_frequency(mark_a, mark_b, frequencies)
-          frequencies[mark_a.key] * -1 <=> frequencies[mark_b.key] * -1
-        end
+        most_frequent_marks = mark_counts.select { |_, count| count == max_count }
 
-        def sort_by_decorator(mark_a, mark_b)
-          default_idx = KNOWN_TYPES.length
-
-          a_index = KNOWN_TYPES.index(mark_a.key) || default_idx
-          b_index = KNOWN_TYPES.index(mark_b.key) || default_idx
-
-          a_index <=> b_index
-        end
-
-        # Attempts to sort by the first non-zero result
-        def handle_sort_results(results)
-          results.each do |result|
-            return result unless result.zero?
+        if most_frequent_marks.size > 1
+          unknown_mark_keys = most_frequent_marks.keys - Mark::KNOWN_TYPES
+          if unknown_mark_keys.any?
+            all_marks.find { |mark| mark.key == unknown_mark_keys.first }
+          else
+            sorted_keys = most_frequent_marks.keys.sort_by { |key| Mark::KNOWN_TYPES.index(key) || Float::INFINITY }
+            all_marks.find { |mark| mark.key == sorted_keys.first }
           end
-          nil
+        else
+          all_marks.find { |mark| mark.key == most_frequent_marks.keys.first }
         end
+      end
     end
 
-    def initialize(key:, definition: nil)
+    attr_reader :key, :serializer, :definition
+
+    def initialize(key:, serializer:, definition: nil)
       @key = key
+      @serializer = serializer
       @definition = definition
     end
 
-    def decorator?
-      KNOWN_TYPES.include?(key)
+    def serialize(inner_html)
+      serializer.call(inner_html, definition&.raw_json)
     end
-
-    private
-      attr_reader :key
   end
 end
