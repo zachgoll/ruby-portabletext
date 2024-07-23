@@ -5,7 +5,9 @@ module PortableText
         @serializers = default_serializers.merge(serializers)
       end
 
-      def get(key)
+      def get(type, style = nil)
+        key = (type == "block" ? (style || "normal") : type).to_sym
+
         @serializers[key]
       end
 
@@ -13,6 +15,7 @@ module PortableText
 
         def default_serializers
           {
+            span: Serializer::HTMLElement.new("span"),
             normal: Serializer::HTMLElement.new("p"),
             h1: Serializer::HTMLElement.new("h1"),
             h2: Serializer::HTMLElement.new("h2"),

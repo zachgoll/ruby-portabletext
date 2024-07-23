@@ -1,4 +1,6 @@
 module PortableText
+  class UnknownTypeError < StandardError; end
+
   class Parser
     def initialize(json, serializer_registry)
       @json = json
@@ -53,11 +55,15 @@ module PortableText
         list_level = element["level"]
         list_type = element["listItem"]
         children = create_children(element["children"], element["markDefs"])
+        serializer = serializer_registry.get(type, style)
+
+        raise UnknownTypeError.new("#{type} is not defined in serializers registry") unless serializer
 
         PortableText::Block.new \
           key: key,
           type: type,
           style: style,
+          serializer: serializer,
           list_level: list_level,
           list_type: list_type,
           children: children,

@@ -8,6 +8,7 @@ class PortableText::BlockTest < Minitest::Test
       key: "test",
       type: "test",
       style: "test",
+      serializer: PortableText::Serializer::HTMLElement.new("p"),
       children: [],
       raw_json: {}
   end

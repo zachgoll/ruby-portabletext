@@ -8,6 +8,7 @@ require "portable_text/html_builder"
 # Serializers
 require "portable_text/serializer/html_element"
 require "portable_text/serializer/underline"
+require "portable_text/serializer/registry"
 
 # Elements
 require "portable_text/block"

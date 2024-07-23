@@ -6,10 +6,12 @@ require_relative "renderable"
 module PortableText
   class Block
     include Renderable
-    def initialize(key:, type:, style:, children:, raw_json:, list_level: nil, list_type: nil)
+
+    def initialize(key:, type:, style:, serializer:, children:, raw_json:, list_level: nil, list_type: nil)
       @key = key
       @type = type
       @style = style
+      @serializer = serializer
       @children = children
       @raw_json = raw_json
       @list_level = list_level

@@ -4,5 +4,12 @@ module PortableText
         @elements = elements
         @raw_json = raw_json
       end
+
+      private
+        attr_reader :elements, :raw_json
+
+        def mark_frequencies
+          # PH
+        end
   end
 end
