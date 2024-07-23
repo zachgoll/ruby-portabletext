@@ -15,6 +15,9 @@ module PortableText
 
         def default_serializers
           {
+            ul: Serializer::HTMLElement.new("ul"),
+            ol: Serializer::HTMLElement.new("ol"),
+            li: Serializer::HTMLElement.new("li"),
             span: Serializer::HTMLElement.new("span"),
             normal: Serializer::HTMLElement.new("p"),
             h1: Serializer::HTMLElement.new("h1"),

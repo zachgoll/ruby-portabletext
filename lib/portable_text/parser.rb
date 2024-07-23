@@ -57,7 +57,7 @@ module PortableText
         list_type = element["listItem"]
 
         mark_defs = (element["markDefs"] || []).map { |md| PortableText::MarkDef.new md["_type"], raw_json: md }
-        children = create_children(element["children"], mark_defs)
+        children = create_children(element["children"] || [], mark_defs)
 
         serializer = serializer_registry.get(type, style)
 
@@ -78,7 +78,13 @@ module PortableText
 
       def create_list(elements)
         blocks = elements.map { |e| create_block(e) }
-        PortableText::List.new(blocks)
+
+        serializer_key = blocks.first.list_type == "numbered" ? "ol" : "ul"
+
+        serializer = serializer_registry.get(serializer_key)
+        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
+
+        PortableText::List.new(blocks, serializer)
       end
 
       def create_children(elements, mark_definitions)

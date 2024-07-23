@@ -8,6 +8,8 @@ module PortableText
   class Block
     include Renderable
 
+    attr_reader :list_level, :list_type, :children
+
     def initialize(serializer:, attributes: {}, raw_json: {})
       @serializer = serializer
       @raw_json = raw_json
@@ -21,7 +23,8 @@ module PortableText
     end
 
     def to_html
-      @serializer.call("", @raw_json)
+      rendered_children = children ? children.to_html : ""
+      @serializer.call(rendered_children, @raw_json)
     end
 
     def marks
