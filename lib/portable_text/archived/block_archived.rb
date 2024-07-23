@@ -1,7 +1,8 @@
+require_relative "renderable"
 require_relative "children"
 require_relative "mark_def"
 
-class Block
+class BlockArchived < Renderable
   attr_reader :key, :type, :children, :style, :mark_defs, :list_item, :level, :project_id, :dataset
 
   def initialize(json, project_id, dataset)

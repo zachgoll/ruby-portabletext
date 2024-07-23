@@ -1,5 +1,4 @@
 require_relative "annotation/link"
-require_relative "annotation/highlight"
 require_relative "annotation/unknown"
 require_relative "decorator"
 

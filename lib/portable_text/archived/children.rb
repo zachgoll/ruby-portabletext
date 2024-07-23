@@ -42,8 +42,6 @@ class Children
           combined_marks << Decorator.new(mark_key)
         else
           case mark_def&.type
-          when "highlight"
-            combined_marks << Annotation::Highlight.new(mark_key, mark_def.attributes)
           when "link"
             combined_marks << Annotation::Link.new(mark_key, mark_def.attributes)
           else

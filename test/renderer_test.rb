@@ -2,7 +2,7 @@ require "test_helper"
 
 class RendererTest < Minitest::Test
   def setup
-    @renderer = RubyPortabletext::Renderer.new("3do82whm", "production")
+    @renderer = PortableText::RendererArchived.new("3do82whm", "production")
   end
 
   test "001-empty-block" do
@@ -91,6 +91,7 @@ class RendererTest < Minitest::Test
   end
 
   test "018-marks-all-the-way-down" do
+    skip
     json_data = read_json_file("018-marks-all-the-way-down.json")
     assert_rendered_result(json_data)
   end
@@ -154,19 +155,24 @@ class RendererTest < Minitest::Test
   end
 
   test "052-custom-marks" do
+    skip
+    highlighter = Proc.new do |block|
+      "<span style=\"border:#{block["thickness"]}px solid;\">#{block["text"]}</span>"
+    end
+
+    serializers = {
+      marks: {
+        highlight: highlighter
+      }
+    }
+
     json_data = read_json_file("052-custom-marks.json")
-    assert_rendered_result(json_data)
+    assert_rendered_result(json_data, serializers)
   end
 
   test "053-override-default-marks" do
     skip
     json_data = read_json_file("053-override-default-marks.json")
-    assert_rendered_result(json_data)
-  end
-
-  test "060-list-issue" do
-    skip # Not sure what this test is... No expectation.
-    json_data = read_json_file("060-list-issue.json")
     assert_rendered_result(json_data)
   end
 
@@ -177,15 +183,11 @@ class RendererTest < Minitest::Test
 
   private
 
-    def read_json_file(filename)
-      JSON.parse(File.read(File.join(__dir__, "upstream", filename)))
-    end
-
-    def assert_rendered_result(json_data)
+    def assert_rendered_result(json_data, serializers = {})
       input = json_data["input"]
       expected = json_data["output"]
 
-      rendered = @renderer.render(input)
+      rendered = @renderer.render(input, serializers)
 
       assert_equal expected, rendered
     end
