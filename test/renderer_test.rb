@@ -84,38 +84,38 @@ class RendererTest < Minitest::Test
     json_data = read_json_file("016-deep-weird-lists.json")
     assert_rendered_result(json_data)
   end
-  #
-  # test "017-all-default-block-styles" do
-  #   json_data = read_json_file("017-all-default-block-styles.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "018-marks-all-the-way-down" do
-  #   skip
-  #   json_data = read_json_file("018-marks-all-the-way-down.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "019-keyless" do
-  #   json_data = read_json_file("019-keyless.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "020-empty-array" do
-  #   json_data = read_json_file("020-empty-array.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "021-list-without-level" do
-  #   json_data = read_json_file("021-list-without-level.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "022-inline-nodes" do
-  #   json_data = read_json_file("022-inline-nodes.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
+
+  test "017-all-default-block-styles" do
+    json_data = read_json_file("017-all-default-block-styles.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "018-marks-all-the-way-down" do
+    skip
+    json_data = read_json_file("018-marks-all-the-way-down.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "019-keyless" do
+    json_data = read_json_file("019-keyless.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "020-empty-array" do
+    json_data = read_json_file("020-empty-array.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "021-list-without-level" do
+    json_data = read_json_file("021-list-without-level.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "022-inline-nodes" do
+    json_data = read_json_file("022-inline-nodes.json")
+    assert_rendered_result(json_data)
+  end
+
   # test "023-hard-breaks" do
   #   json_data = read_json_file("023-hard-breaks.json")
   #   assert_rendered_result(json_data)

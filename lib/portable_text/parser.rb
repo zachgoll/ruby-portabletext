@@ -30,7 +30,8 @@ module PortableText
           if List.list_item?(e1) && List.list_item?(e2)
             last_started_list_type = e1["listItem"] if last_started_list_type.nil?
 
-            if e2["level"] > 1 || (e2["level"] == 1 && e2["listItem"] == last_started_list_type)
+            e2_level = e2["level"] || List.default_level
+            if e2_level > 1 || (e2_level == 1 && e2["listItem"] == last_started_list_type)
               true
             else
               last_started_list_type = e2["listItem"]

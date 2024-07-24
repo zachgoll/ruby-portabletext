@@ -8,6 +8,10 @@ module PortableText
         def list_item?(json)
           json.key?("listItem")
         end
+
+        def default_level
+          1
+        end
       end
 
       def initialize(list_items)
@@ -15,10 +19,11 @@ module PortableText
       end
 
       def to_html
-        start_level = list_items.first.list_level || 1
+        start_level = list_items.first.list_level || List.default_level
 
-        chunks = list_items.chunk_while do |li1, li2|
-          li2.list_level > start_level
+        chunks = list_items.chunk_while do |_li1, li2|
+          li2_level = li2.list_level || List.default_level
+          li2_level > start_level
         end.to_a
 
         items = chunks.map { |chunk| render_chunk(chunk) }.join

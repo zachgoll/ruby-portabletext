@@ -12,7 +12,7 @@ module PortableText
           if item["_type"] == "span"
             Span.from_json(item, defs)
           else
-            Block.from_json(item)
+            Block.from_json(item, inline: true)
           end
         end
 

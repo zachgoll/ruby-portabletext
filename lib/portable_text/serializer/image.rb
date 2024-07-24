@@ -8,10 +8,19 @@ module PortableText
       end
 
       def call(_inner_html, data)
-        figure_html("<img src=\"#{image_url(data)}\"/>")
+        src = image_url(data)
+        if data.dig("_internal", "inline")
+          image_html(src)
+        else
+          figure_html(image_html(src))
+        end
       end
 
       private
+
+        def image_html(src)
+          "<img src=\"#{src}\"/>"
+        end
 
         def image_url(data)
           return data["asset"]["url"] if data["asset"]["url"]
