@@ -20,8 +20,7 @@ module PortableText
           {
             ul: Serializer::HTMLElement.new("ul"),
             ol: Serializer::HTMLElement.new("ol"),
-            li: Serializer::HTMLElement.new("li"),
-            span: Serializer::HTMLElement.new("span"),
+            li: Serializer::ListItem.new,
             normal: Serializer::HTMLElement.new("p"),
             h1: Serializer::HTMLElement.new("h1"),
             h2: Serializer::HTMLElement.new("h2"),
@@ -36,7 +35,8 @@ module PortableText
             "strike-through": Serializer::HTMLElement.new("del"),
             underline: Serializer::Underline.new,
             link: Serializer::Link.new,
-            image: Serializer::Image.new(@base_image_url)
+            image: Serializer::Image.new(@base_image_url),
+            span: Serializer::Span.new,
           }
         end
     end

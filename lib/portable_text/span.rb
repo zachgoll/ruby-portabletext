@@ -6,44 +6,38 @@ module PortableText
 
     class << self
       def from_json(json, mark_defs)
+        type = json["_type"]
         text = json["text"]
-        marks = json["marks"].map { |mark_key| Mark.from_key(mark_key, mark_defs) }
+        marks = (json["marks"] || []).map { |mark_key| Mark.from_key(mark_key, mark_defs) }
+
+        serializer = PortableText.configuration.serializer_registry.get(type)
+
+        raise UnknownTypeError.new("#{type} is not defined in serializers registry") unless serializer
 
         new \
+          serializer: serializer,
           attributes: {
+            type: type,
             text: text,
             marks: marks,
           },
-          raw_json: json
+          raw_json: json.merge("_internal" => { "inline" => true })
       end
     end
 
     attr_reader :text
     attr_accessor :marks
 
-    def initialize(attributes: {}, raw_json: {})
+    def initialize(attributes: {}, raw_json: {}, serializer:)
+      @type = attributes[:type]
       @text = attributes[:text]
       @marks = attributes[:marks]
       @raw_json = raw_json
+      @serializer = serializer
     end
 
     def to_html
-      escape_html_string(text)
+      @serializer.call(text, @raw_json)
     end
-
-    private
-      def escape_html_string(html_string)
-        map = {
-          "'" => "&#x27;",
-          "\n" => "<br/>",
-          "\"" => "&quot;"
-        }
-
-        pattern = Regexp.union(map.keys)
-
-        html_string.gsub(pattern) do |match|
-          map[match]
-        end
-      end
   end
 end

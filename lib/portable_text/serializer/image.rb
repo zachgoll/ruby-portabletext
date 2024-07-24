@@ -34,7 +34,7 @@ module PortableText
         end
 
         def image_parts(image_ref)
-          @image_parts ||= image_ref.split("-").drop(1)
+          image_ref.split("-").drop(1)
         end
 
         def figure_html(inner_html)

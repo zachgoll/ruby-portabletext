@@ -9,7 +9,7 @@ module PortableText
     include Renderable
 
     class << self
-      def from_json(json, inline: false)
+      def from_json(json)
         key = json["_key"]
         type = json["_type"]
         style = json["style"]
@@ -35,7 +35,7 @@ module PortableText
             list_type: list_type,
             children: children,
           },
-          raw_json: json.merge("_internal" => { "inline" => inline })
+          raw_json: json
       end
     end
 

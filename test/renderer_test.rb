@@ -116,32 +116,36 @@ class RendererTest < Minitest::Test
     assert_rendered_result(json_data)
   end
 
-  # test "023-hard-breaks" do
-  #   json_data = read_json_file("023-hard-breaks.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "024-inline-images" do
-  #   json_data = read_json_file("024-inline-images.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "025-image-with-hotspot" do
-  #   skip
-  #   json_data = read_json_file("025-image-with-hotspot.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "026-inline-block-with-text" do
-  #   json_data = read_json_file("026-inline-block-with-text.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "027-styled-list-items" do
-  #   json_data = read_json_file("027-styled-list-items.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
+  test "023-hard-breaks" do
+    json_data = read_json_file("023-hard-breaks.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "024-inline-images" do
+    json_data = read_json_file("024-inline-images.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "025-image-with-hotspot" do
+    skip
+    json_data = read_json_file("025-image-with-hotspot.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "026-inline-block-with-text" do
+    PortableText.configuration.serializer_registry.register(
+      "button",
+      Proc.new { |inner_html| "<button>#{inner_html}</button>" }
+    )
+    json_data = read_json_file("026-inline-block-with-text.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "027-styled-list-items" do
+    json_data = read_json_file("027-styled-list-items.json")
+    assert_rendered_result(json_data)
+  end
+
   # test "050-custom-block-type" do
   #   skip
   #   json_data = read_json_file("050-custom-block-type.json")

@@ -7,8 +7,10 @@ require "portable_text/renderer"
 # Serializers
 require "portable_text/serializer/html_element"
 require "portable_text/serializer/underline"
+require "portable_text/serializer/span"
 require "portable_text/serializer/link"
 require "portable_text/serializer/image"
+require "portable_text/serializer/list_item"
 require "portable_text/serializer/registry"
 
 # Elements

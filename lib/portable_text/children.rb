@@ -9,11 +9,7 @@ module PortableText
         defs = mark_defs.map { |md| MarkDef.from_json(md) }
 
         parsed_items = items.map do |item|
-          if item["_type"] == "span"
-            Span.from_json(item, defs)
-          else
-            Block.from_json(item, inline: true)
-          end
+          Span.from_json(item, defs)
         end
 
         new parsed_items, raw_json: items
