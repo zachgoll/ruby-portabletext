@@ -17,7 +17,7 @@ module PortableText
       def to_html
         start_level = list_items.first.list_level || 1
 
-        chunks = list_items.chunk_while do |_li1, li2|
+        chunks = list_items.chunk_while do |li1, li2|
           li2.list_level > start_level
         end.to_a
 

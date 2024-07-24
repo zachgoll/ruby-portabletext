@@ -75,15 +75,15 @@ class RendererTest < Minitest::Test
     assert_rendered_result(json_data)
   end
 
-  # test "015-all-basic-marks" do
-  #   json_data = read_json_file("015-all-basic-marks.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "016-deep-weird-lists" do
-  #   json_data = read_json_file("016-deep-weird-lists.json")
-  #   assert_rendered_result(json_data)
-  # end
+  test "015-all-basic-marks" do
+    json_data = read_json_file("015-all-basic-marks.json")
+    assert_rendered_result(json_data)
+  end
+
+  test "016-deep-weird-lists" do
+    json_data = read_json_file("016-deep-weird-lists.json")
+    assert_rendered_result(json_data)
+  end
   #
   # test "017-all-default-block-styles" do
   #   json_data = read_json_file("017-all-default-block-styles.json")
