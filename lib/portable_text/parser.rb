@@ -78,13 +78,7 @@ module PortableText
 
       def create_list(elements)
         blocks = elements.map { |e| create_block(e) }
-
-        serializer_key = blocks.first.list_type == "numbered" ? "ol" : "ul"
-
-        serializer = serializer_registry.get(serializer_key)
-        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
-
-        PortableText::List.new(blocks, serializer)
+        PortableText::List.new(blocks, serializer_registry)
       end
 
       def create_children(elements, mark_definitions)
