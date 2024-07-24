@@ -36,10 +36,7 @@ module PortableText
 
         def serializer
           serializer_key = list_items.first&.list_type == "number" ? "ol" : "ul"
-          serializer = PortableText.configuration.serializer_registry.get(serializer_key)
-
-          raise UnknownTypeError.new("#{serializer_key} not available in serializer registry") unless serializer
-
+          serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "ul")
           serializer
         end
 

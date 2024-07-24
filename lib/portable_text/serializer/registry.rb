@@ -6,12 +6,17 @@ module PortableText
         @serializers = default_serializers
       end
 
-      def get(key)
-        @serializers[key.to_sym]
+      def get(key, fallback:)
+        serializer = @serializers[key&.to_sym]
+        serializer || @serializers[fallback&.to_sym]
       end
 
       def register(key, serializer)
         @serializers[key.to_sym] = serializer
+      end
+
+      def reset
+        @serializers = default_serializers
       end
 
       private
@@ -37,6 +42,7 @@ module PortableText
             link: Serializer::Link.new,
             image: Serializer::Image.new(@base_image_url),
             span: Serializer::Span.new,
+            missing_mark: Serializer::HTMLElement.new("span")
           }
         end
     end

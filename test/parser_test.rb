@@ -27,24 +27,4 @@ class ParserTest < Minitest::Test
     # 2 blocks, 2 lists
     assert_equal 4, parser.parse(json_data).length
   end
-
-  test "raises on invalid types" do
-    invalid = {
-      "style" => "h4",
-      "_type" => "unregistered_type",
-      "_key" => "06ca981a1d18",
-      "markDefs" => [],
-      "children" => [
-        {
-          "_type" => "span",
-          "text" => "test",
-          "marks" => []
-        }
-      ]
-    }
-
-    assert_raises PortableText::UnknownTypeError do
-      PortableText::Parser.new.parse(invalid)
-    end
-  end
 end

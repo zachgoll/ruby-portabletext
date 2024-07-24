@@ -10,9 +10,7 @@ module PortableText
         text = json["text"]
         marks = (json["marks"] || []).map { |mark_key| Mark.from_key(mark_key, mark_defs) }
 
-        serializer = PortableText.configuration.serializer_registry.get(type)
-
-        raise UnknownTypeError.new("#{type} is not defined in serializers registry") unless serializer
+        serializer = PortableText.configuration.serializer_registry.get(type, fallback: "span")
 
         new \
           serializer: serializer,

@@ -25,10 +25,10 @@ module Minitest
     end
 
     def create_child(type: "span", attributes: {}, serializer: nil, raw_json: {})
-      serializer = serializer || PortableText::Serializer::HTMLElement.new("span")
+      serializer = serializer || PortableText::Serializer::Span.new
       if type == "span"
         defaults = { type: "span" }
-        PortableText::Span.new(attributes: defaults.merge(attributes))
+        PortableText::Span.new(attributes: defaults.merge(attributes), serializer: serializer)
       else
         PortableText::Block.new(serializer: serializer, attributes: attributes, raw_json: raw_json)
       end

@@ -56,7 +56,7 @@ class PortableText::ListTest < Minitest::Test
   private
 
     def create_list_span(text)
-      PortableText::Span.new(attributes: { text: text, marks: [] })
+      PortableText::Span.new(attributes: { text: text, marks: [] }, serializer: PortableText::Serializer::Span.new)
     end
 
     def create_list_item(type, level, text)

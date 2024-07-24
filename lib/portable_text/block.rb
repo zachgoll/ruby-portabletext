@@ -21,9 +21,7 @@ module PortableText
         serializer_key = type == "block" ? style : type
         serializer_key = "li" if list_type
 
-        serializer = PortableText.configuration.serializer_registry.get(serializer_key || "normal")
-
-        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
+        serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "normal")
 
         new \
           serializer: serializer,

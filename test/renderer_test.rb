@@ -137,8 +137,11 @@ class RendererTest < Minitest::Test
       "button",
       Proc.new { |inner_html| "<button>#{inner_html}</button>" }
     )
+
     json_data = read_json_file("026-inline-block-with-text.json")
     assert_rendered_result(json_data)
+
+    PortableText.configuration.serializer_registry.reset
   end
 
   test "027-styled-list-items" do
@@ -146,44 +149,77 @@ class RendererTest < Minitest::Test
     assert_rendered_result(json_data)
   end
 
-  # test "050-custom-block-type" do
-  #   skip
-  #   json_data = read_json_file("050-custom-block-type.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "051-override-defaults" do
-  #   skip
-  #   json_data = read_json_file("051-override-defaults.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "052-custom-marks" do
-  #   skip
-  #   highlighter = Proc.new do |block|
-  #     "<span style=\"border:#{block["thickness"]}px solid;\">#{block["text"]}</span>"
-  #   end
-  #
-  #   serializers = {
-  #     marks: {
-  #       highlight: highlighter
-  #     }
-  #   }
-  #
-  #   json_data = read_json_file("052-custom-marks.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "053-override-default-marks" do
-  #   skip
-  #   json_data = read_json_file("053-override-default-marks.json")
-  #   assert_rendered_result(json_data)
-  # end
-  #
-  # test "061-missing-mark-serializer" do
-  #   json_data = read_json_file("061-missing-mark-serializer.json")
-  #   assert_rendered_result(json_data)
-  # end
+  test "050-custom-block-type" do
+    class CodeSerializer < PortableText::Serializer::Base
+      def call(_inner_html, data = nil)
+        "<pre data-language=\"#{data["language"]}\"><code>#{escape_html(data["code"])}</code></pre>"
+      end
+
+      private
+        def escape_html(html_string)
+          map = {
+            "'" => "&#x27;",
+            ">" => "&gt;"
+          }
+
+          pattern = Regexp.union(map.keys)
+
+          html_string.gsub(pattern) do |match|
+            map[match]
+          end
+        end
+    end
+
+    PortableText.configuration.serializer_registry.register("code", CodeSerializer.new)
+
+    json_data = read_json_file("050-custom-block-type.json")
+    assert_rendered_result(json_data)
+
+    PortableText.configuration.serializer_registry.reset
+  end
+
+  test "051-override-defaults" do
+    PortableText.configuration.serializer_registry.register(
+      "image",
+      Proc.new { |data| "<img alt=\"Such image\" src=\"https://cdn.sanity.io/images/3do82whm/production/YiOKD0O6AdjKPaK24WtbOEv0-3456x2304.jpg\"/>" }
+    )
+
+    json_data = read_json_file("051-override-defaults.json")
+    assert_rendered_result(json_data)
+
+    PortableText.configuration.serializer_registry.reset
+  end
+
+  test "052-custom-marks" do
+    highlighter = Proc.new do |inner_html, data|
+      "<span style=\"border:#{data["thickness"]}px solid;\">#{inner_html}</span>"
+    end
+
+    PortableText.configuration.serializer_registry.register("highlight", highlighter)
+
+    json_data = read_json_file("052-custom-marks.json")
+    assert_rendered_result(json_data)
+
+    PortableText.configuration.serializer_registry.reset
+  end
+
+  test "053-override-default-marks" do
+    custom_link = Proc.new do |inner_html, data|
+      "<a class=\"mahlink\" href=\"#{data["href"]}\">#{inner_html}</a>"
+    end
+
+    PortableText.configuration.serializer_registry.register("link", custom_link)
+
+    json_data = read_json_file("053-override-default-marks.json")
+    assert_rendered_result(json_data)
+
+    PortableText.configuration.serializer_registry.reset
+  end
+
+  test "061-missing-mark-serializer" do
+    json_data = read_json_file("061-missing-mark-serializer.json")
+    assert_rendered_result(json_data)
+  end
 
   private
 

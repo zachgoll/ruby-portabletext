@@ -8,9 +8,7 @@ module PortableText
         definition = mark_defs.find { |md| md.key == key }
 
         serializer_key = definition ? definition.type : key
-        serializer = PortableText.configuration.serializer_registry.get(serializer_key)
-
-        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
+        serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "missing_mark")
 
         new \
           key: key,

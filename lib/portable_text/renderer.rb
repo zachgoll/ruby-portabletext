@@ -12,7 +12,7 @@ module PortableText
 
     private
       def parser
-        @parser ||= Parser.new
+        Parser.new
       end
 
       def serializer
