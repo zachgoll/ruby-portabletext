@@ -8,6 +8,37 @@ module PortableText
   class Block
     include Renderable
 
+    class << self
+      def from_json(json)
+        key = json["_key"]
+        type = json["_type"]
+        style = json["style"]
+        list_level = json["level"]
+        list_type = json["listItem"]
+
+        children = Children.from_json(json["children"] || [], json["markDefs"] || [])
+
+        serializer_key = type == "block" ? style : type
+        serializer_key = "li" if list_type
+
+        serializer = PortableText.configuration.serializer_registry.get(serializer_key || "normal")
+
+        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
+
+        new \
+          serializer: serializer,
+          attributes: {
+            key: key,
+            type: type,
+            style: style,
+            list_level: list_level,
+            list_type: list_type,
+            children: children,
+          },
+          raw_json: json
+      end
+    end
+
     attr_reader :list_level, :list_type, :children
 
     def initialize(serializer:, attributes: {}, raw_json: {})

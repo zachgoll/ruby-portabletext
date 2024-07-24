@@ -3,6 +3,12 @@ require "minitest/spec"
 require "json"
 require "portable_text"
 
+PortableText.configure do |config|
+  config.project_id = "3do82whm"
+  config.dataset = "production"
+  config.cdn_base_url = "https://cdn.sanity.io/images"
+end
+
 module Minitest
   class Test
     def self.test(name, &block)

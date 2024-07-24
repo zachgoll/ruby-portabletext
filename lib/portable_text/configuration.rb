@@ -1,12 +1,6 @@
 module PortableText
   class Configuration
-    attr_accessor :serializers, :project_id, :dataset
-
-    def initialize(project_id: nil, dataset: nil, serializers: {})
-      @serializers = serializers
-      @project_id = project_id
-      @dataset = dataset
-    end
+    attr_accessor :serializer_registry, :project_id, :dataset, :cdn_base_url
   end
 
   class << self
@@ -16,6 +10,15 @@ module PortableText
 
     def configure
       yield(configuration)
+      configuration.serializer_registry = Serializer::Registry.new(base_image_url)
+    end
+
+    def base_image_url
+      [
+        configuration.cdn_base_url,
+        configuration.project_id,
+        configuration.dataset
+      ].join("/")
     end
   end
 end

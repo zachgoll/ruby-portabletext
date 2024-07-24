@@ -1,14 +1,17 @@
 module PortableText
   module Serializer
     class Registry
-      def initialize(serializers = {})
-        @serializers = default_serializers.merge(serializers)
+      def initialize(base_image_url)
+        @base_image_url = base_image_url
+        @serializers = default_serializers
       end
 
-      def get(type, style = nil)
-        key = (type == "block" ? (style || "normal") : type).to_sym
+      def get(key)
+        @serializers[key.to_sym]
+      end
 
-        @serializers[key]
+      def register(key, serializer)
+        @serializers[key.to_sym] = serializer
       end
 
       private
@@ -31,7 +34,9 @@ module PortableText
             em: Serializer::HTMLElement.new("em"),
             code: Serializer::HTMLElement.new("code"),
             "strike-through": Serializer::HTMLElement.new("del"),
-            underline: Serializer::Underline.new
+            underline: Serializer::Underline.new,
+            link: Serializer::Link.new,
+            image: Serializer::Image.new(@base_image_url)
           }
         end
     end

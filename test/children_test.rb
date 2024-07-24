@@ -21,7 +21,7 @@ class PortableText::ChildrenTest < Minitest::Test
   end
 
   def setup
-    custom_mark_def = PortableText::MarkDef.new("custom_mark", raw_json: { "href" => "#test" })
+    custom_mark_def = PortableText::MarkDef.new(key: "custom_mark", type: "custom_mark", raw_json: { "href" => "#test" })
     @custom_mark = PortableText::Mark.new(key: "custom_mark", definition: custom_mark_def, serializer: MockCustomSerializer.new)
     @strong_mark = PortableText::Mark.new(key: "strong", serializer: MockHtmlSerializer.new("strong"))
     @em_mark = PortableText::Mark.new(key: "em", serializer: MockHtmlSerializer.new("em"))

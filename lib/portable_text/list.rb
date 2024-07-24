@@ -4,42 +4,50 @@ module PortableText
     class List
       include Renderable
 
-      def initialize(list_items, serializer_registry)
+      class << self
+        def list_item?(json)
+          json.key?("listItem")
+        end
+      end
+
+      def initialize(list_items)
         @list_items = list_items
-        @serializer_registry = serializer_registry
-        @serializer = get_serializer_from_registry(list_items, serializer_registry)
       end
 
       def to_html
         start_level = list_items.first.list_level || 1
 
-        chunks = list_items.chunk_while do |li1, li2|
-          li1.list_level > start_level && li2.list_level > start_level
+        chunks = list_items.chunk_while do |_li1, li2|
+          li2.list_level > start_level
         end.to_a
 
         items = chunks.map { |chunk| render_chunk(chunk) }.join
 
-        @serializer.call(items)
+        serializer.call(items)
       end
 
       private
-        attr_reader :list_items, :serializer, :serializer_registry
+        attr_reader :list_items
+
+        def serializer
+          serializer_key = list_items.first&.list_type == "number" ? "ol" : "ul"
+          serializer = PortableText.configuration.serializer_registry.get(serializer_key)
+
+          raise UnknownTypeError.new("#{serializer_key} not available in serializer registry") unless serializer
+
+          serializer
+        end
 
         def render_chunk(chunk)
           if chunk.size == 1
             chunk.first.to_html
           else
-            List.new(chunk, serializer_registry).to_html
+            wrap_sub_list(chunk.first, List.new(chunk.drop(1)))
           end
         end
 
-        def get_serializer_from_registry(items, registry)
-          serializer_key = items.first&.list_type == "numbered" ? "ol" : "ul"
-          serializer = registry.get(serializer_key)
-
-          raise UnknownTypeError.new("#{serializer_key} not available in serializer registry") unless serializer
-
-          serializer
+        def wrap_sub_list(block, sub_list)
+          "<li>" + block.children.to_html + sub_list.to_html + "</li>"
         end
     end
 end

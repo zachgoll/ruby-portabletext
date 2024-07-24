@@ -1,8 +1,16 @@
 module PortableText
   class MarkDef
-    attr_reader :type, :raw_json
 
-    def initialize(type, raw_json:)
+    class << self
+      def from_json(json)
+        new key: json["_key"], type: json["_type"], raw_json: json
+      end
+    end
+
+    attr_reader :key, :type, :raw_json
+
+    def initialize(key:, type:, raw_json:)
+      @key = key
       @type = type
       @raw_json = raw_json
     end

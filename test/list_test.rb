@@ -15,12 +15,7 @@ class PortableText::ListTest < Minitest::Test
   end
 
   def setup
-    @registry = PortableText::Serializer::Registry.new({
-                                                         ul: MockListSerializer.new("ul"),
-                                                         ol: MockListSerializer.new("ol"),
-                                                         li: MockListSerializer.new("li")
-                                                       })
-    @object = PortableText::List.new([], @registry)
+    @object = PortableText::List.new([])
   end
 
   test "renders basic list" do
@@ -30,7 +25,7 @@ class PortableText::ListTest < Minitest::Test
       create_list_item("bullet", 1, "third"),
     ]
 
-    list = PortableText::List.new(items, @registry)
+    list = PortableText::List.new(items)
 
     assert_equal "<ul><li>first</li><li>second</li><li>third</li></ul>", list.to_html
   end
@@ -53,9 +48,9 @@ class PortableText::ListTest < Minitest::Test
       create_list_item("bullet", 1, "1c"),
     ]
 
-    list = PortableText::List.new(items, @registry)
+    list = PortableText::List.new(items)
 
-    assert_equal "<ul><li>1a</li><ul><li>2a</li><li>2b</li><ul><li>3a</li><li>3b</li></ul></ul><li>1b</li><li>1c</li></ul>", list.to_html
+    assert_equal "<ul><li>1a<ul><li>2a</li><li>2b<ul><li>3a</li><li>3b</li></ul></li></ul></li><li>1b</li><li>1c</li></ul>", list.to_html
   end
 
   private
@@ -72,6 +67,6 @@ class PortableText::ListTest < Minitest::Test
           children: PortableText::Children.new([create_list_span(text)])
         },
         raw_json: {},
-        serializer: @registry.get("li")
+        serializer: PortableText::Serializer::HTMLElement.new("li")
     end
 end

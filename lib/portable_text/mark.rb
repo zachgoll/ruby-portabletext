@@ -3,6 +3,21 @@ module PortableText
     KNOWN_TYPES = %w[ strong em code underline strike-through ]
 
     class << self
+
+      def from_key(key, mark_defs)
+        definition = mark_defs.find { |md| md.key == key }
+
+        serializer_key = definition ? definition.type : key
+        serializer = PortableText.configuration.serializer_registry.get(serializer_key)
+
+        raise UnknownTypeError.new("#{serializer_key} is not defined in serializers registry") unless serializer
+
+        new \
+          key: key,
+          serializer: serializer,
+          definition: definition
+      end
+
       def chunk_by_marks(nodes)
         # nodes.chunk_while { |e1, e2| e1.marks.any? && e2.marks.any? }
         nodes.chunk_while do |e1, e2|

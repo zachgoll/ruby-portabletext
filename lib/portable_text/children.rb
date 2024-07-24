@@ -4,6 +4,22 @@ module PortableText
   class Children
     include Renderable
 
+    class << self
+      def from_json(items, mark_defs)
+        defs = mark_defs.map { |md| MarkDef.from_json(md) }
+
+        parsed_items = items.map do |item|
+          if item["_type"] == "span"
+            Span.from_json(item, defs)
+          else
+            Block.from_json(item)
+          end
+        end
+
+        new parsed_items, raw_json: items
+      end
+    end
+
     def initialize(elements = [], raw_json: {})
       @elements = elements
       @raw_json = raw_json

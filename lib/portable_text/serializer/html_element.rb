@@ -7,7 +7,7 @@ module PortableText
         @tag = tag
       end
 
-      def call(inner_html)
+      def call(inner_html, _data = nil)
         "<#{@tag}>#{inner_html}</#{@tag}>"
       end
     end
