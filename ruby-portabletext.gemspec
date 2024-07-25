@@ -1,5 +1,5 @@
 Gem::Specification.new do |spec|
-  spec.name          = "ruby_portabletext"
+  spec.name          = "ruby-portabletext"
   spec.version       = "0.1.0"
   spec.authors       = ["Zach Gollwitzer"]
   spec.email         = ["zach@linkslogicweb.com"]

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby_portabletext (0.1.0)
+    ruby-portabletext (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -14,7 +14,7 @@ PLATFORMS
 
 DEPENDENCIES
   minitest (~> 5.0)
-  ruby_portabletext!
+  ruby-portabletext!
 
 BUNDLED WITH
    2.5.10
