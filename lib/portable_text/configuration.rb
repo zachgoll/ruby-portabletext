@@ -1,6 +1,6 @@
 module PortableText
   class Configuration
-    attr_accessor :serializer_registry, :project_id, :dataset, :cdn_base_url
+    attr_accessor :serializer_registry, :project_id, :dataset, :cdn_base_url, :on_missing_serializer
   end
 
   class << self
@@ -10,7 +10,10 @@ module PortableText
 
     def configure
       yield(configuration)
-      configuration.serializer_registry = Serializer::Registry.new(base_image_url)
+
+      configuration.serializer_registry = Serializer::Registry.new \
+        base_image_url: base_image_url,
+        on_missing_serializer: configuration.on_missing_serializer
     end
 
     def base_image_url

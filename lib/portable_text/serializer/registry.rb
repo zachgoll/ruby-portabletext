@@ -1,13 +1,19 @@
 module PortableText
   module Serializer
     class Registry
-      def initialize(base_image_url)
+      def initialize(base_image_url:, on_missing_serializer: -> {})
         @base_image_url = base_image_url
+        @on_missing_serializer = on_missing_serializer
         @serializers = default_serializers
       end
 
       def get(key, fallback:)
         serializer = @serializers[key&.to_sym]
+
+        unless serializer
+          @on_missing_serializer&.call(key)
+        end
+
         serializer || @serializers[fallback&.to_sym]
       end
 
