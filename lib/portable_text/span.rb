@@ -10,7 +10,7 @@ module PortableText
         text = json["text"]
         marks = (json["marks"] || []).map { |mark_key| Mark.from_key(mark_key, mark_defs) }
 
-        serializer = PortableText.configuration.serializer_registry.get(type, fallback: "span")
+        serializer = PortableText.configuration.serializer_registry.get(type, fallback: "span", ctx: json)
 
         new \
           serializer: serializer,

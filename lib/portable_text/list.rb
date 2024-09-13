@@ -36,7 +36,7 @@ module PortableText
 
         def serializer
           serializer_key = list_items.first&.list_type == "number" ? "ol" : "ul"
-          serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "ul")
+          serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "ul", ctx: list_items)
           serializer
         end
 

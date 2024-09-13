@@ -21,7 +21,7 @@ module PortableText
         serializer_key = type == "block" ? style : type
         serializer_key = "li" if list_type
 
-        serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "normal")
+        serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "normal", ctx: json)
 
         new \
           serializer: serializer,

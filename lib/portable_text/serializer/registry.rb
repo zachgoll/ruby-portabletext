@@ -7,11 +7,11 @@ module PortableText
         @serializers = default_serializers
       end
 
-      def get(key, fallback:)
+      def get(key, fallback:, ctx: nil)
         serializer = @serializers[key&.to_sym]
 
         unless serializer
-          @on_missing_serializer&.call(key)
+          @on_missing_serializer&.call(key, ctx)
         end
 
         serializer || @serializers[fallback&.to_sym]

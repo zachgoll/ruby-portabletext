@@ -8,7 +8,7 @@ module PortableText
         definition = mark_defs.find { |md| md.key == key }
 
         serializer_key = definition ? definition.type : key
-        serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "missing_mark")
+        serializer = PortableText.configuration.serializer_registry.get(serializer_key, fallback: "missing_mark", ctx: mark_defs)
 
         new \
           key: key,
